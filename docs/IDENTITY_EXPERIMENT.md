@@ -1,8 +1,34 @@
-# Siri Identity Lab — experimental build 1.0.4 (2026110901)
+# Siri Identity Lab — experimental build 1.0.5 (2026110902)
 
 This build tests whether cached device identity affects Siri Expressive Voices
 eligibility on an iPhone 17 running iOS 27. It does not claim a successful voice
 unlock. Build, transaction and rollback tests cannot verify Siri functionality.
+
+## Observed result and recovery
+
+The first iPhone 17 / iOS 27.0.1 product-only test did **not** expose Expressive
+Voices. It changed ProductType to `iPhone19,2`, while audio identity queries still
+returned `iPhone18,3` / `V57AP`. The public Foundation Models API reported
+`available` and selected `core3` / AFM 3 Core. The phone still reported 8 GiB via
+MobileGestalt. The tester reported a camera recognition warning and nonresponding
+spoken Siri while typed Siri worked. These are regressions, not success criteria.
+
+Restore the original identity and restart before continuing. Version 1.0.5 adds
+**Check Selected AI Model** and **Share Model Diagnostics**. The diagnostic path
+does not acquire the MobileGestalt write exploit, change settings, generate text,
+request downloads or remove model assets. It queries only allowlisted capability
+values and the public Foundation Models API. Device-unique identifiers are excluded.
+
+The default API's variant does not enumerate installed Siri voice assets or prove
+which model a Siri conversation uses. `modelNotReady` is not proof of a stuck
+download; `DeviceSupportsAudioIntelligence` is not established as the Expressive
+Voices gate. The precise advanced-model selection gate and a working bypass have
+not been established. There is no verified model-reset or force-download fix in
+this build, and neither RAM spoofing nor unverified capability overrides is applied.
+
+The host can request the same read-only report with the launch argument
+`--siri-model-diagnostics`; that path writes a report in the app's own Documents
+directory and exits, without loading the main editor or writing a system cache.
 
 ## Using the experiment
 
@@ -47,7 +73,7 @@ in this build. Nugget itself warns against restoring on iOS 27.
 | Logical field | MobileGestalt key |
 |---|---|
 | ProductType | `h9jDsbgj7xIVeIQ8S3/X3Q` |
-| HardwareModel | `oYicEKzVTz4/CxxE05pEgQ` |
+| TargetSubType (Nugget's board-spoof field) | `oYicEKzVTz4/CxxE05pEgQ` |
 | HardwarePlatform | `5pYKlGnYYBzGvAlIU8RjEQ` |
 | Generative-model capability | `A62OafQ85EJAiiqKn4agtg` |
 

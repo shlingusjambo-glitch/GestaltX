@@ -15,6 +15,6 @@ codesign --force --sign - --entitlements ShareExtension/GestaltXShare.entitlemen
 codesign --force --sign - --entitlements GestaltX/GestaltX.entitlements \
   --generate-entitlement-der "$app"
 codesign --verify --deep --strict "$app"
-output="$PWD/build/GestaltX_Lab_1.0.4_AppGroupReady.ipa"
+output="$PWD/build/GestaltX_Lab_1.0.5_AppGroupReady.ipa"
 ditto -c -k --sequesterRsrc --keepParent "$stage/Payload" "$output"
 echo "Prepared $output (requires provisioning before installation)"

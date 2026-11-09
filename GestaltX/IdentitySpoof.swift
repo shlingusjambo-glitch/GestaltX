@@ -54,7 +54,7 @@ enum IdentitySpoof {
 
     /// Deliberately excludes serial numbers, UDIDs, account details and the rest of the plist.
     static func report(_ document: GestaltDocument) -> String {
-        let names = [("ProductType", productKey), ("HardwareModel", boardKey),
+        let names = [("ProductType", productKey), ("TargetSubType", boardKey),
                      ("HardwarePlatform", platformKey), ("Apple Intelligence capability", aiKey)]
         return (["GestaltX Identity Lab — cached values; voice functionality is unverified"] + names.map { name, key in
             let value = document.extra[key].map { String(describing: $0) } ?? "absent"

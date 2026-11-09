@@ -6,6 +6,7 @@ struct IdentitySpoofSection: View {
     @State private var profileID = "18pro"
     @State private var scope = IdentitySpoof.Scope.product
     @State private var enableAI = false
+    @State private var diagnostics = ""
 
     private var profile: IdentitySpoof.Profile {
         IdentitySpoof.profiles.first { $0.id == profileID } ?? IdentitySpoof.profiles[0]
@@ -13,6 +14,11 @@ struct IdentitySpoofSection: View {
 
     var body: some View {
         Section {
+            Label(model.sourceIsDevice ? "Device cache loaded" : "Local document only", systemImage: model.sourceIsDevice ? "iphone" : "doc")
+            if !model.sourceIsDevice {
+                Text("Use Tools → Read MobileGestalt to change this device. Saving an imported document does not apply it to iOS.")
+                    .font(.footnote).foregroundStyle(.secondary)
+            }
             Text("Experiment with the identity used for Siri model eligibility. Expressive Voices are not confirmed to work.")
                 .font(.footnote).foregroundStyle(.secondary)
             Picker("Report as", selection: $profileID) {
@@ -34,7 +40,16 @@ struct IdentitySpoofSection: View {
                 Text("Report shows pending cached values, not a successful voice unlock.")
                     .font(.caption).foregroundStyle(.secondary)
             }
+            Button("Check Selected AI Model") {
+                diagnostics = SiriModelDiagnostics.collect()
+            }
+            if !diagnostics.isEmpty {
+                Text(diagnostics).font(.caption.monospaced()).textSelection(.enabled)
+                ShareLink("Share Model Diagnostics", item: diagnostics)
+            }
             Text("Review Changes and Apply writes the experiment. Restart manually, then test Siri. To undo, stage the original identity, review, apply and restart. Original values are saved before writing.")
+                .font(.footnote).foregroundStyle(.secondary)
+            Text("If spoken Siri or camera behavior regresses, restore the original identity and restart before another experiment. A changed device name does not prove that an advanced model downloaded.")
                 .font(.footnote).foregroundStyle(.secondary)
         } header: {
             Text("Siri Identity Lab · Experimental")
