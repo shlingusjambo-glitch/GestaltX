@@ -23,6 +23,12 @@ Included/adapted: the respring HTML in NeoSpringView.swift and the earlier Gesta
 GestaltX changes dated 2026-11-09: fixed raw-string closing-tag escaping and Web Crypto request length; added timeout, cancellation, nonpersistent WebKit data store and Simulator exclusion. NeoSpring itself is credited as a project/technique reference, not assigned a license it does not declare.
 
 3. Research and workflow references (not bundled source)
+Fork addition (2026-11-09): Siri Identity Lab uses Nugget's published MobileGestalt
+key mapping as a research reference. Its mutation, diagnostic and restoration
+code is independently implemented. Target declarations contain factual device
+metadata exported from the companion Nugget fork; no Nugget application or
+restore code is bundled. See docs/IDENTITY_EXPERIMENT.md for provenance.
+
 PoomSmart/MGKeys: https://github.com/PoomSmart/MGKeys
 leminlimez/Nugget: https://github.com/leminlimez/Nugget
 rooootdev/mond: https://github.com/rooootdev/mond

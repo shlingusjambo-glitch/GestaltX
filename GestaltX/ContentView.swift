@@ -278,6 +278,7 @@ struct CategoryView: View {
                 }
             }
             if category == .intelligence {
+                IdentitySpoofSection()
                 Section {
                     Picker(L("Region Code"), selection: $model.regionCodeID) {
                         ForEach(RegionPreset.all) { Text(L($0.title)).tag($0.id) }

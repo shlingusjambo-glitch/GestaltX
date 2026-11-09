@@ -212,6 +212,30 @@ final class GestaltManager: ObservableObject {
             await reloadBackups()
         } catch { failed(error); await reloadBackups() }
     }
+    // Identity experiments use the same explicit review, backup and verified write as MG Control.
+    func stageIdentity(_ profile: IdentitySpoof.Profile, scope: IdentitySpoof.Scope, enableAI: Bool) {
+        guard !isBusy, let working else { return }
+        do {
+            self.working = try IdentitySpoof.applying(profile, scope: scope, enableAI: enableAI, to: working)
+            if enableAI { choices["ai"] = .keep }
+            message = "Identity experiment staged. Review Changes before applying, then restart manually. Siri voices are unverified."
+            log("[identity] staged \(profile.name), \(scope.rawValue); AI capability=\(enableAI)")
+        } catch { failed(error) }
+    }
+
+    var canRestoreIdentity: Bool {
+        guard !isBusy, let working, let snapshot else { return false }
+        return !IdentitySpoof.restoring(working, from: snapshot).matches(working)
+    }
+
+    func stageOriginalIdentity() {
+        guard !isBusy, let working, let snapshot else { return }
+        self.working = IdentitySpoof.restoring(working, from: snapshot)
+        choices["ai"] = .keep
+        message = "Original identity staged. Review Changes, apply, then restart manually."
+        log("[identity] staged exact original identity fields")
+    }
+
     func clearLog() { logs = [] }
 
     // MARK: - Exploit-process logging

@@ -13,6 +13,11 @@
 
 A MobileGestalt editor for iPhone and iPad. Developed by [huamidev](https://github.com/huamidev).
 
+This fork adds **Siri Identity Lab**, an experimental iPhone 17 Pro / iPhone 18 Pro
+cached-identity spoof with explicit review and exact original-field restoration.
+Expressive Voices are **not verified to unlock**. Read the
+[experiment and rollback guide](docs/IDENTITY_EXPERIMENT.md) before testing.
+
 ## Features
 
 | Category | Presets and tools |
